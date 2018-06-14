@@ -36,8 +36,15 @@ if (isDev) {
                 {
                     test: /\.styl/,
                     use: [
-                        'style-loader',
+                        'vue-style-loader', //vue-style-loader可以做到CSS样式热更新
                         'css-loader',
+                        // {
+                        //    loader:'css-loader',
+                        //    options:{
+                        //     modules:true,
+                        //     localIdentName: isDev ? '[path]-[name]-[hash:base64:5]' : '[hash:base64:5]',
+                        //    },
+                        // },
                         {
                             loader: 'postcss-loader',
                             options: {
@@ -69,7 +76,7 @@ if (isDev) {
                 {
                     test: /\.styl/,
                     use: ExtractPlugin.extract({
-                        fallback: 'style-loader',
+                        fallback: 'vue-style-loader',
                         use: [
                             'css-loader',
                             {

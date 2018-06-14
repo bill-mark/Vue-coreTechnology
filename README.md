@@ -47,8 +47,10 @@ CSS分离打包工具
     "vue": "2.5.13",
     "vue-loader": "13.6.0",
     "vue-template-compiler": "2.5.13",
+    "vue-style-loader": "^4.1.0",    //.vue文件CSS样式热更新
     "webpack": "3.10.0",
     "webpack-dev-server": "2.9.7"
     "webpack-merge": "^4.1.2"  //webpack拓展工具
+    "rimraf": "^2.6.2",  //删除目录插件 用来删除dist
   }
 }
