@@ -31,20 +31,6 @@ const config = {
                     'css-loader'
                 ]
             },
-            // {
-            //     test:/\.styl/,
-            //     use: [
-            //         'style-loader',
-            //         'css-loader',
-            //         {
-            //             loader:'postcss-loader',
-            //             options: {
-            //                 sourceMap: true,//stylus-loader已经生成了sourcemap,配置为true,避免再生成一次
-            //             }
-            //         },
-            //         'stylus-loader'
-            //     ]
-            // },
             {
                 test:/\.(gif|jpg|jpeg|png|svg)$/,
                 use:[

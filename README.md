@@ -49,5 +49,6 @@ CSS分离打包工具
     "vue-template-compiler": "2.5.13",
     "webpack": "3.10.0",
     "webpack-dev-server": "2.9.7"
+    "webpack-merge": "^4.1.2"  //webpack拓展工具
   }
 }
