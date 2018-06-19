@@ -9,6 +9,3 @@ const app = new Vue({
 
 app.$mount('#root')
 
-console.log(app.$data)
-console.log(app.$pros)
-console.log(app.$root)
