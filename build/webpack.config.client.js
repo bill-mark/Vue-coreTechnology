@@ -1,20 +1,22 @@
-const path = require('path')
-const HTMLPlugin = require('html-webpack-plugin')
-const webpack = require('webpack')
-const merge = require('webpack-merge')
-const ExtractPlugin = require('extract-text-webpack-plugin')//css分离打包工具
-const baseConfig = require('./webpack.config.base')
+const path = require('path');
+const HTMLPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+const merge = require('webpack-merge');
+const ExtractPlugin = require('extract-text-webpack-plugin');
+const baseConfig = require('./webpack.config.base');
 
-const isDev = process.env.NODE_ENV === 'development'
+const isDev = process.env.NODE_ENV === 'development';
 
-const defaultPluins = [
+const defaultPlugins = [
     new webpack.DefinePlugin({
         'process.env': {
-            NODE_ENV: isDev ? ' "development" ' : ' "production" '
-        }//不加双引号调用时候会变成process.env.NODE_ENV = development 变量development是不存在的,会报错
+            NODE_ENV: isDev ? '"development"': '"production"'
+        }
     }),
-    new HTMLPlugin()
-]
+    new HTMLPlugin({
+      template: path.join(__dirname, 'template.html')
+    })
+];
 
 const devServer = {
     port: 8000,
@@ -22,33 +24,28 @@ const devServer = {
     overlay: {
         errors: true,
     },
-    open: true,
-    hot: true,
-}
+    historyApiFallback: {
+      index: '/public/index.html'
+    },
+    hot: true
+};
 
-let config
+let config;
 
 if (isDev) {
-    config = merge(baseConfig,{
-        devtool : '#cheap-module-eval-source-map',
-        module:{
-            rules:[
+    config = merge(baseConfig, {
+        devtool: '#cheap-module-eval-source-map',
+        module: {
+            rules: [
                 {
                     test: /\.styl/,
                     use: [
-                        'vue-style-loader', //vue-style-loader可以做到CSS样式热更新
+                        'vue-style-loader',
                         'css-loader',
-                        // {
-                        //    loader:'css-loader',
-                        //    options:{
-                        //     modules:true,
-                        //     localIdentName: isDev ? '[path]-[name]-[hash:base64:5]' : '[hash:base64:5]',
-                        //    },
-                        // },
                         {
                             loader: 'postcss-loader',
                             options: {
-                                sourceMap: true,//stylus-loader已经生成了sourcemap,配置为true,避免再生成一次
+                                sourceMap: true
                             }
                         },
                         'stylus-loader'
@@ -57,22 +54,22 @@ if (isDev) {
             ]
         },
         devServer,
-        plugins: defaultPluins.concat([
+        plugins: defaultPlugins.concat([
             new webpack.HotModuleReplacementPlugin(),
             new webpack.NoEmitOnErrorsPlugin()
         ])
-    })
+    });
 } else {
-    config = merge(baseConfig,{
-        entry : {  //把框架单独打包出来,避免浏览器每次都重新加载
+    config = merge(baseConfig, {
+        entry: {
             app: path.join(__dirname, '../client/index.js'),
-            vendor: ['vue',]
+            vendor: ['vue']
         },
-        output:{
+        output: {
             filename: '[name].[chunkhash:8].js'
         },
-        module:{
-            rules:[
+        module: {
+            rules: [
                 {
                     test: /\.styl/,
                     use: ExtractPlugin.extract({
@@ -91,16 +88,18 @@ if (isDev) {
                 }
             ]
         },
-        plugins: defaultPluins.concat([
+        plugins: defaultPlugins.concat([
             new ExtractPlugin('styles.[contentHash:8].css'),
-            new webpack.optimize.CommonsChunkPlugin({  //打包框架代码
+            new webpack.optimize.CommonsChunkPlugin({
                 name: 'vendor'
             }),
-            new webpack.optimize.CommonsChunkPlugin({  //打包webpack代码,runtime要放在vendor后面
+            new webpack.optimize.CommonsChunkPlugin({
                 name: 'runtime'
-            }) 
+            })
         ])
-    })
+    });
+
 }
 
-module.exports = config
+module.exports = config;
+

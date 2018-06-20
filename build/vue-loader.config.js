@@ -1,11 +1,14 @@
-//vue-loader是处理.vue结尾文件的middleware
-module.exports = (isDev) =>{
-	return {
-		preserveWhitespace:false,  //消除模板空格
-		extractCSS:!isDev,  //生成环境,.vue格式CSS单独打包
-		cssModules:{
-			localIdentName: isDev ? '[path]-[name]-[hash:base64:5]' : '[hash:base64:5]',
-            camelCase: true  //CSS命名方式
-		},
-	}
+/**
+ * Created by qilongli on 2018/5/22.
+ */
+module.exports = (isDev) => {
+    return {
+        preserveWhitespace: true,
+        extractCss: !isDev,
+        cssModules: {
+            localIdentName: isDev ? '[path]-[name]-[hash:base64:5]' : '[hash:base64:5]',
+            camelCase: true
+        },
+        //hotReload: false, //根据环境变量生成
+    }
 }
